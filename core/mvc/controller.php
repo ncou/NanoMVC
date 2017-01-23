@@ -1,27 +1,51 @@
 <?php
 
 class Controller {
-	const HTTP_OK = 200;
-	const HTTP_CREATED = 201;
-	const HTTP_NO_CONTENT = 204;
-	const HTTP_MOVED_PERMANENTLY = 301;
-	const HTTP_FOUND = 302;
-	const HTTP_BAD_REQUEST = 400;
-	const HTTP_UNAUTHORIZED  = 401;
-	const HTTP_FORBIDDEN = 403;
-	const HTTP_NOT_FOUND = 404;
-	const HTTP_INTERNAL_SERVER_ERROR = 500;
 
-	protected $view;
-	protected $model;
+	/**
+     * Load a view class
+     */
+    public function view($data = [])
+    {
+		// Create a new view and display the parsed contents
+		$templatePath = APP_DIR . 'views/';
+        return new View($templatePath, $data);
+    }
+    /**
+     * Load a model class
+     */
+    public function model($model)
+    {
+        return new $model();
+    }
 
+	/**
+     * Load a helper class
+     */
+    public function helper($name)
+	{
+		$helper = new $name;
+		return $helper;
+	}
 
-	public function redirect($loc)
+	/**
+	 * Require a plugin php file
+	 */
+    public function loadPlugin($name)
+	{
+		require(APP_DIR .'plugins/'. strtolower($name) .'.php');
+	}
+
+	/**
+	 * Do a "302 found" redirect
+	 */
+	public function redirect($loc, $code = 302)
 	{
 		global $config;
 		
-		http_response_code(HTTP_FOUND);
+		http_response_code($code);
 		header('Location: '. $config['base_url'] . $loc);
+		exit();
 	}
     
 }

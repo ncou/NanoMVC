@@ -1,8 +1,20 @@
 <?php
 
+// based on slim render class : https://github.com/slimphp/PHP-View/blob/master/src/PhpRenderer.php
 class View {
 
 	private $attributes = array();
+	private $templatePath;
+	private $template;
+
+	// default root node name for the XML output
+	private $rootName = 'results';
+
+	public function __construct($templatePath = "", $attributes = [])
+    {
+        $this->templatePath = rtrim($templatePath, '/\\') . '/';
+        $this->attributes = $attributes;
+    }
 
 	public function setAttributes(array $attributes)
     {
@@ -25,21 +37,23 @@ class View {
         return $this->attributes[$key];
     }
 
-	public function renderHtml($template, array $data = [])
+    public function layout($layoutName) {
+    	$this->template = $layoutName;
+    }
+
+	public function fetchHtml(array $data = [])
 	{
 		$data = array_merge($this->attributes, $data);
 
-		$templatePath = rtrim(APP_DIR . 'views/', '/\\') . '/';
-
 		// TODO : améliorer la gestion des erreurs et ajouter des catch en amont voir un "set_error_handler"
-		if (!is_file($templatePath . $template)) {
-            throw new \Exception("View cannot render `$template` because the template does not exist");
+		if (!is_file($this->templatePath . $this->template)) {
+            throw new \Exception("View cannot render `$this->template` because the template does not exist");
         }
 
 		try {
             ob_start();
             extract($data);
-			include($templatePath . $template);
+			include($this->templatePath . $this->template);
             $output = ob_get_clean();
         } catch(\Throwable $e) { // PHP 7+
             ob_end_clean();
@@ -48,45 +62,33 @@ class View {
             ob_end_clean();
             throw $e;
         }
-        print $output;
+        return $output;
 	}
 
-	public function renderXml($rootName = '', array $data = [])
+	public function rootName($rootName) {
+		$this->rootName = $rootName;
+	}
+
+	public function fetchXml($rootName = '', array $data = [])
 	{
 		$data = array_merge($this->attributes, $data);
 
-		$xml = new SimpleXMLElement($rootName ? '<' . $rootName . '/>' : '<results/>');
+		$xml = new SimpleXMLElement('<?xml version="1.0"?><' . $this->rootName . '/>');
 		array_walk_recursive($data, function($value, $key)use($xml){
 			$xml->addChild($key, $value);
 		});
-		
-		$dom = new DOMDocument("1.0");
-		$dom->preserveWhiteSpace = false;
-		$dom->formatOutput = true;
-		$dom->loadXML($xml->asXML());
-		$result = $dom->saveXML();
 
-		header('Content-Type: application/xml; charset=utf-8');
-        header('Content-Length: ' . strlen($result));
-
-		print $result;
-        exit;
+		return $xml->asXML();
 	}
 
-	function renderJson(array $data = [])
+	function fetchJson(array $data = [])
 	{
 		$data = array_merge($this->attributes, $data);
 
-		//$result = json_encode($pMessage, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        $result = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-
-        header('Content-Type: application/json; charset=utf-8');
-        header('Content-Length: ' . strlen($result));
-
-        print $result;
-        exit;
+        return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 	}
-    
+ 
+
 }
 
 ?>
