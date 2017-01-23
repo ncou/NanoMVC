@@ -6,7 +6,7 @@
 define('ROOT_DIR', realpath(dirname(__FILE__)) .'/');
 define('APP_DIR', ROOT_DIR .'app/');
 
-require(APP_DIR .'config/config.php');
+require(ROOT_DIR .'core/config/config.php');
 
 require(ROOT_DIR .'core/autoload.php');
 Autoload::loadClasses(array(
@@ -33,8 +33,6 @@ if ($_SERVER['APP_ENVIRONMENT'] == 'DEV') {
 }
 
 // Load the routes to dispatch the request
-require(APP_DIR .'config/routes.php');
-
-loadRoutes();
+require(ROOT_DIR .'core/config/routes.php');
 
 ?>
