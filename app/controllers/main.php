@@ -26,11 +26,9 @@ class Main extends Controller {
 		$this->response->writeHTML($this->view);
 		// uncomment to test a Json or XML render (used for a REST application)
 		//$this->response->writeJSON($this->view);
-		//$this->view->rootName('ROOT_NODE');
-		//$this->response->writeXML($this->view);
 
 		// uncomment to test a redirection
-		//$this->redirect('login/success/');
+		$this->redirect('login/success/');
 
 		
 	}
