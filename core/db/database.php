@@ -9,7 +9,6 @@ class Database{
   // The db connection is established in the private constructor.
   private function __construct()
   {
-      global $config;
 
       $options = array(
         PDO::ATTR_CASE => PDO::CASE_NATURAL,
@@ -23,12 +22,12 @@ class Database{
       );
 
       // building data source name from config
-      $dsn = 'mysql:host=' . $config['db_host'] .
-             ';dbname='    . $config['db_name'] .
-             ';port='    . $config['db_port'] .
+      $dsn = 'mysql:host=' . DB_HOST .
+             ';dbname='    . DB_NAME .
+             ';port='    . DB_PORT .
              ';connect_timeout=15';
 
-      $this->db = new PDO($dsn, $config['db_user'], $config['db_pass'], $options);
+      $this->db = new PDO($dsn, DB_USER, DB_PASS, $options);
   }
   
   public static function getInstance()

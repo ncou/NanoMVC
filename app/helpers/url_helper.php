@@ -4,8 +4,7 @@ class Url_helper {
 
 	function base_url()
 	{
-		global $config;
-		return $config['base_url'];
+		return BASE_URL;
 	}
 	
 	function segment($seg)

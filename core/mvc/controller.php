@@ -41,10 +41,8 @@ class Controller {
 	 */
 	public function redirect($loc, $code = 302)
 	{
-		global $config;
-		
 		http_response_code($code);
-		header('Location: '. $config['base_url'] . $loc);
+		header('Location: '. BASE_URL . $loc);
 		exit();
 	}
     

@@ -1,3 +1,6 @@
+# Either "DEV" or "PROD"
+SetEnv APP_ENVIRONMENT "DEV"
+
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f

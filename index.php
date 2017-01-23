@@ -20,36 +20,17 @@ Autoload::loadClasses(array(
   //add your paths here
 ));
 
-// store global var
-global $config;
-
-// Define base URL 
-define('BASE_URL', $config['base_url']);
-
-
 // Start a session
 session_start(); 
 
-// Set variable for tracking the number of requests per session id
-if(!isset($_SESSION['regen'])) {
-    $_SESSION['regen'] = 0;
-}
-
-// Rotate session id every N requests to protect from session fixation
-if(++$_SESSION['regen'] > $config['rotation_interval']) {
-    $_SESSION['regen'] = 0;
-    session_regenerate_id(true);
-}     
-
-// PHP settings for dev or production mode 
-if(!$config['production']) {
-    error_reporting(E_ALL);
-    ini_set('display_errors', '1');
+// PHP settings for DEV or PROD debug mode 
+if ($_SERVER['APP_ENVIRONMENT'] == 'DEV') {
+  error_reporting(E_ALL);
+  ini_set('display_errors', '1');
 } else {
 	error_reporting(NULL);
-    ini_set('display_errors', '0');
+  ini_set('display_errors', '0');
 }
-
 
 // Load the routes to dispatch the request
 require(APP_DIR .'config/routes.php');

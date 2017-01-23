@@ -24,9 +24,9 @@ Visit [https://github.com/dannyvankooten/AltoRouter](https://github.com/dannyvan
 
 * Edit the `app/config/routes.php` to customize your application
 * Edit the `app/config/config.php` to add your database credentials
+* Edit the `.htaccess` file to change the SetEnv `APP_ENVIRONMENT "PROD"` to reduce the log verbosity.
 
 * You can use 3 render functions `renderHtml`, `renderJson`, `renderXml`
-* If you go to production with this framework, edit the `app/config/config.php` file to reduce the debug logs.
 * For a custom 404 error parge you need to edit the `core/router.php` run() function.
 
 ## License
