@@ -1,0 +1,9 @@
+# secure uploads directory (disable access to all files extension, execept jpg/jpeg...etc)
+<Files ~ ".*\..*">
+	Order Allow,Deny
+	Deny from all
+</Files>
+<FilesMatch "\.(jpg|jpeg|jpe|gif|png|tif|tiff|zip|mp3|mov)$">
+	Order Deny,Allow
+	Allow from all
+</FilesMatch>
