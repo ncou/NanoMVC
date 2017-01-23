@@ -1,6 +1,6 @@
 #NaNoMVC
 
-NaNo is a tiny application framework built for people who use an MVC pattern. PIP aims to be as simple as possible to set up and use.
+NaNo is a tiny application framework built for people who use an MVC pattern and aims to be as simple as possible to set up and use.
 
 This work is based on "PIP" framework :
 Visit [http://gilbitron.github.com/PIP](http://gilbitron.github.com/PIP/)
