@@ -8,7 +8,7 @@ class Response_helper {
 		$this->statusCode = $code;
 	}
 
-	private function _body($response, $isHTML, $isJSON, $isXML) {
+	private function _write($response, $isHTML, $isJSON, $isXML) {
 
 		http_response_code($this->statusCode);
 
@@ -30,19 +30,20 @@ class Response_helper {
 
 	        echo $result;
         }
+        // stop the php execution
         exit();		
 	}
 
 	public function writeHTML($response) {
-		$this->_body($response, true, false, false);	
+		$this->_write($response, true, false, false);	
 	}
 
 	public function writeJSON($response) {
-		$this->_body($response, false, true, false);	
+		$this->_write($response, false, true, false);	
 	}
 
 	public function writeXML($response) {
-		$this->_body($response, false, false, true);	
+		$this->_write($response, false, false, true);	
 	}
 
 	private function _isEmpty()
